@@ -9,9 +9,9 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
 | Project | Description | Preview |
 |---------|-------------|---------|
 | [Task 1: Interactive Quiz Game](./task1/) | A fun quiz game with multiple-choice questions and a number guessing challenge. Features real-time feedback, explanations, and a modern web UI. | [<img src="https://img.shields.io/badge/Live%20Preview-Click%20Here-brightgreen?style=for-the-badge" alt="Preview"/>](https://gwing-internship.onrender.com/) |
-| [Task 2: Number Guessing Game](./task%202/) | Guess the number with smart hints, multiple difficulty levels, and a persistent high score system. Includes statistics and a clean interface. | [<img src="https://img.shields.io/badge/Live%20Preview-Click%20Here-brightgreen?style=for-the-badge" alt="Preview"/>](https://gwing-internship-1.onrender.com/) |
-| [Task 3: Rock, Paper, Scissors](./task%203/) | Play the classic game against the computer! Tracks your stats, win rates, and game history. Modern web and console versions. | [<img src="https://img.shields.io/badge/Live%20Preview-Click%20Here-brightgreen?style=for-the-badge" alt="Preview"/>](https://gwing-internship-2.onrender.com/) |
-| [Task 4: Kingdom of Shadows](./task%204/) | An interactive, dark fantasy "choose your own adventure" game with branching storylines, character stats, and multiple endings. | [<img src="https://img.shields.io/badge/Live%20Preview-Click%20Here-brightgreen?style=for-the-badge" alt="Preview"/>](https://gwing-internship-3.onrender.com/) |
+| [Task 2: Number Guessing Game](./task2/) | Guess the number with smart hints, multiple difficulty levels, and a persistent high score system. Includes statistics and a clean interface. | [<img src="https://img.shields.io/badge/Live%20Preview-Click%20Here-brightgreen?style=for-the-badge" alt="Preview"/>](https://gwing-internship-1.onrender.com/) |
+| [Task 3: Rock, Paper, Scissors](./task3/) | Play the classic game against the computer! Tracks your stats, win rates, and game history. Modern web and console versions. | [<img src="https://img.shields.io/badge/Live%20Preview-Click%20Here-brightgreen?style=for-the-badge" alt="Preview"/>](https://gwing-internship-2.onrender.com/) |
+| [Task 4: Kingdom of Shadows](./task4/) | An interactive, dark fantasy "choose your own adventure" game with branching storylines, character stats, and multiple endings. | [<img src="https://img.shields.io/badge/Live%20Preview-Click%20Here-brightgreen?style=for-the-badge" alt="Preview"/>](https://gwing-internship-3.onrender.com/) |
 
 
 
@@ -70,11 +70,6 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
    ```
 4. **Run the game** (console or web as described above)
 5. **Open your browser** to [http://localhost:5000](http://localhost:5000) for the web version
-
----
-
-## 🖼️ Screenshots & Demos
-Add screenshots or GIFs of each game here for a visual preview!
 
 ---
 
