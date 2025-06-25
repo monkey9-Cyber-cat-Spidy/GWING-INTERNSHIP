@@ -8,6 +8,13 @@
 
 # Python version requirement
 # Python >= 3.6 
+<<<<<<< HEAD:task4/requirements.txt
 gunicorn==21.2.0
 Flask==2.3.3
 Werkzeug==2.3.7 
+=======
+
+gunicorn==21.2.0
+Flask==2.3.3
+Werkzeug==2.3.7
+>>>>>>> 636d6c610934005211824c3787c3e42da9e2d5dc:task 4/requirements.txt

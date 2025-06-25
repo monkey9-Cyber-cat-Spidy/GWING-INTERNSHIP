@@ -10,4 +10,8 @@
 # Python >= 3.6 
 gunicorn==21.2.0
 Flask==2.3.3
+<<<<<<< HEAD:task3/requirements.txt
 Werkzeug==2.3.7 
+=======
+Werkzeug==2.3.7
+>>>>>>> 636d6c610934005211824c3787c3e42da9e2d5dc:task 3/requirements.txt
