@@ -25,8 +25,8 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
 - **Scoring:** Points, bonus, grading, detailed results
 - **Web UI:** Responsive, real-time feedback, session management
 - **How to Run:**
-  - Console: `cd "task 1" && python quiz_game.py`
-  - Web: `cd "task 1" && python app.py` or `run_web.bat`
+  - Console: `cd "task1" && python quiz_game.py`
+  - Web: `cd "task1" && python app.py` or `run_web.bat`
   - Preview: [http://localhost:5000](http://localhost:5000)
 
 ### 2. [Number Guessing Game](./task%202/)
@@ -35,8 +35,8 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
 - **Scoring:** Dynamic, efficiency-based, high scores
 - **Statistics:** Games played, total/average score, leaderboard
 - **How to Run:**
-  - Console: `cd "task 2" && python number_guessing_game.py`
-  - Web: `cd "task 2" && python app.py` or `run_web.bat`
+  - Console: `cd "task2" && python number_guessing_game.py`
+  - Web: `cd "task2" && python app.py` or `run_web.bat`
   - Preview: [http://localhost:5000](http://localhost:5000)
 
 ### 3. [Rock, Paper, Scissors](./task%203/)
@@ -45,8 +45,8 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
 - **Game History:** Round-by-round tracking, recent games
 - **Persistence:** Stats saved between sessions
 - **How to Run:**
-  - Console: `cd "task 3" && python rock_paper_scissors.py`
-  - Web: `cd "task 3" && python app.py`
+  - Console: `cd "task3" && python rock_paper_scissors.py`
+  - Web: `cd "task3" && python app.py`
   - Preview: [http://localhost:5000](http://localhost:5000)
 
 ### 4. [Kingdom of Shadows](./task%204/)
@@ -54,8 +54,8 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
 - **Choices:** Multiple endings, relationship system, inventory
 - **Progression:** Health, shadow mark, old light, reputation
 - **How to Run:**
-  - Console: `cd "task 4" && python kingdom_of_shadows.py`
-  - Web: `cd "task 4" && python app.py` or `run_web.bat`
+  - Console: `cd "task4" && python kingdom_of_shadows.py`
+  - Web: `cd "task4" && python app.py` or `run_web.bat`
   - Preview: [http://localhost:5000](http://localhost:5000)
 
 ---
