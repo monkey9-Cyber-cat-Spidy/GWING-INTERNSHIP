@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Results - Interactive Quiz Game{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="text-primary">
+        <i class="fas fa-trophy"></i>
+        Final Results
+    </h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-lg">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <h3 class="card-title">
+                        <i class="fas fa-user-circle text-primary"></i>
+                        {{ player_name }}
+                    </h3>
+                </div>
+                
+                <div class="row text-center mb-4">
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-question-circle"></i></h4>
+                            <h3>{{ total_questions }}</h3>
+                            <p class="mb-0">Total Questions</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-check-circle"></i></h4>
+                            <h3>{{ score }}</h3>
+                            <p class="mb-0">Correct Answers</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-percentage"></i></h4>
+                            <h3>{{ "%.1f"|format(percentage) }}%</h3>
+                            <p class="mb-0">Success Rate</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mb-4">
+                    <div class="alert alert-success">
+                        <h4 class="alert-heading">
+                            <i class="fas fa-star"></i>
+                            Grade: {{ grade }}
+                        </h4>
+                        <p class="mb-0">{{ message }}</p>
+                    </div>
+                </div>
+                
+                <div class="progress mb-4" style="height: 20px;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: {{ percentage }}%"
+                         aria-valuenow="{{ percentage }}" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">
+                        {{ "%.1f"|format(percentage) }}%
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <a href="{{ url_for('play_again') }}" class="btn btn-game btn-lg me-3">
+                        <i class="fas fa-redo me-2"></i>
+                        Play Again
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-home me-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card border-0 shadow">
+            <div class="card-body">
+                <h5 class="card-title text-center">
+                    <i class="fas fa-chart-bar text-info"></i>
+                    Performance Summary
+                </h5>
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <p><strong>Quiz Questions:</strong> {{ total_questions }}</p>
+                        <p><strong>Correct Answers:</strong> {{ score }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Accuracy:</strong> {{ "%.1f"|format(percentage) }}%</p>
+                        <p><strong>Grade:</strong> {{ grade }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Add some animation to the results
+    $('.score-display').each(function(index) {
+        $(this).hide().delay(index * 200).fadeIn(500);
+    });
+    
+    // Animate progress bar
+    setTimeout(function() {
+        $('.progress-bar').css('width', '0%').animate({
+            width: '{{ percentage }}%'
+        }, 1500);
+    }, 500);
+    
+    // Add confetti effect for high scores
+    if ({{ percentage }} >= 80) {
+        setTimeout(function() {
+            // Simple confetti effect
+            for (let i = 0; i < 50; i++) {
+                setTimeout(function() {
+                    const confetti = $('<div>')
+                        .css({
+                            position: 'fixed',
+                            left: Math.random() * 100 + '%',
+                            top: '-10px',
+                            width: '10px',
+                            height: '10px',
+                            backgroundColor: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'][Math.floor(Math.random() * 5)],
+                            borderRadius: '50%',
+                            zIndex: 9999,
+                            pointerEvents: 'none'
+                        })
+                        .appendTo('body');
+                    
+                    confetti.animate({
+                        top: '100vh',
+                        opacity: 0
+                    }, 3000, function() {
+                        confetti.remove();
+                    });
+                }, i * 100);
+            }
+        }, 1000);
+    }
+});
+</script>
+{% endblock %} 

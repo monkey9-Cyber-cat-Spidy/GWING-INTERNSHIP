@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Playing - Number Guessing Game{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="text-primary">
+        <i class="fas fa-bullseye"></i>
+        Number Guessing Challenge
+    </h2>
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        I'm thinking of a number between {{ range_min }} and {{ range_max }}. You have {{ max_attempts }} attempts!
+        <span class="difficulty-badge difficulty-{{ difficulty }} ms-2">{{ difficulty.upper() }}</span>
+    </div>
+</div>
+
+<div class="game-card">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="text-center mb-4">
+                <h4>
+                    <i class="fas fa-clock text-warning"></i>
+                    Attempts: <span id="attempts">{{ attempts_used }}</span> / {{ max_attempts }}
+                </h4>
+                <div class="progress mb-3" style="height: 10px;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: {{ (attempts_used / max_attempts) * 100 }}%;"
+                         aria-valuenow="{{ attempts_used }}" 
+                         aria-valuemin="0" 
+                         aria-valuemax="{{ max_attempts }}">
+                    </div>
+                </div>
+            </div>
+            
+            {% if guesses %}
+            <div class="guess-history">
+                <h6><i class="fas fa-history"></i> Previous Guesses:</h6>
+                <div id="guessList">
+                    {% for guess in guesses %}
+                    <span class="guess-item">{{ guess }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <form id="guessForm">
+                <div class="mb-4">
+                    <label for="guess" class="form-label fw-bold">
+                        <i class="fas fa-dice text-primary"></i>
+                        Enter your guess:
+                    </label>
+                    <div class="input-group input-group-lg">
+                        <input type="number" 
+                               class="form-control" 
+                               id="guess" 
+                               name="guess" 
+                               min="{{ range_min }}" 
+                               max="{{ range_max }}" 
+                               placeholder="{{ range_min }}-{{ range_max }}"
+                               required>
+                        <button type="submit" class="btn btn-game">
+                            <i class="fas fa-paper-plane"></i>
+                            Guess
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            <div id="feedback" class="feedback">
+                <div id="feedbackMessage"></div>
+                <div id="hint" class="mt-2"></div>
+                <button id="nextBtn" class="btn btn-game mt-3" style="display: none;">
+                    <i class="fas fa-trophy me-2"></i>
+                    View Results
+                </button>
+            </div>
+            
+            <div id="loading" class="loading text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-2"></i>
+                Back to Home
+            </a>
+            <div>
+                <a href="{{ url_for('statistics') }}" class="btn btn-outline-info me-2">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Statistics
+                </a>
+                <a href="{{ url_for('high_scores') }}" class="btn btn-outline-warning">
+                    <i class="fas fa-trophy me-2"></i>
+                    High Scores
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Template variables
+var currentAttempts = {{ attempts_used }};
+var maxAttempts = {{ max_attempts }};
+var rangeMin = {{ range_min }};
+var rangeMax = {{ range_max }};
+
+$(document).ready(function() {
+    let gameOver = false;
+    
+    $('#guessForm').submit(function(e) {
+        e.preventDefault();
+        
+        if (gameOver) return;
+        
+        const guess = $('#guess').val();
+        
+        if (!guess || guess < rangeMin || guess > rangeMax) {
+            alert('Please enter a valid number between ' + rangeMin + ' and ' + rangeMax + '!');
+            return;
+        }
+        
+        // Disable form
+        $('#guess').prop('disabled', true);
+        $('button[type="submit"]').prop('disabled', true);
+        
+        // Show loading
+        $('#loading').show();
+        
+        // Submit guess via AJAX
+        $.ajax({
+            url: '{{ url_for("submit_guess") }}',
+            method: 'POST',
+            data: {
+                guess: guess
+            },
+            success: function(response) {
+                $('#loading').hide();
+                
+                // Update attempts
+                if (response.attempts_used) {
+                    currentAttempts = response.attempts_used;
+                    $('#attempts').text(currentAttempts);
+                    
+                    // Update progress bar
+                    const progressPercent = (currentAttempts / maxAttempts) * 100;
+                    $('.progress-bar').css('width', progressPercent + '%');
+                }
+                
+                // Add guess to history
+                $('#guessList').append('<span class="guess-item">' + guess + '</span>');
+                
+                // Show feedback
+                const feedbackDiv = $('#feedback');
+                const feedbackMessage = $('#feedbackMessage');
+                const hintDiv = $('#hint');
+                
+                if (response.correct) {
+                    feedbackDiv.addClass('correct');
+                    feedbackMessage.html('<i class="fas fa-trophy"></i> ' + response.message);
+                    if (response.score) {
+                        feedbackMessage.append('<br><strong>Score earned: ' + response.score + ' points!</strong>');
+                    }
+                    if (response.is_new_high) {
+                        feedbackMessage.append('<br><strong>🏆 NEW HIGH SCORE! 🏆</strong>');
+                    }
+                    gameOver = true;
+                } else {
+                    feedbackDiv.addClass('incorrect');
+                    feedbackMessage.html('<i class="fas fa-info-circle"></i> ' + response.message);
+                    
+                    if (response.hint) {
+                        hintDiv.html('<i class="fas fa-lightbulb text-warning"></i> ' + response.hint);
+                    }
+                    
+                    if (response.attempts_left !== undefined) {
+                        feedbackMessage.append('<br><small>Attempts left: ' + response.attempts_left + '</small>');
+                    }
+                }
+                
+                feedbackDiv.show();
+                
+                // Check if game over
+                if (response.next_url) {
+                    setTimeout(function() {
+                        $('#nextBtn').show();
+                    }, 2000);
+                    gameOver = true;
+                } else {
+                    // Re-enable form for next guess
+                    $('#guess').prop('disabled', false).val('').focus();
+                    $('button[type="submit"]').prop('disabled', false);
+                }
+            },
+            error: function(xhr) {
+                $('#loading').hide();
+                const response = xhr.responseJSON;
+                if (response && response.error) {
+                    alert(response.error);
+                } else {
+                    alert('An error occurred. Please try again.');
+                }
+                $('#guess').prop('disabled', false);
+                $('button[type="submit"]').prop('disabled', false);
+            }
+        });
+    });
+    
+    $('#nextBtn').click(function() {
+        window.location.href = '{{ url_for("results") }}';
+    });
+    
+    // Focus on input when page loads
+    $('#guess').focus();
+    
+    // Add some animation
+    $('#guess').on('input', function() {
+        const value = $(this).val();
+        if (value >= rangeMin && value <= rangeMax) {
+            $(this).addClass('border-success');
+        } else {
+            $(this).removeClass('border-success');
+        }
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Play - Rock Paper Scissors{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="text-primary">
+        <i class="fas fa-hand-rock"></i>
+        <i class="fas fa-hand-paper"></i>
+        <i class="fas fa-hand-scissors"></i>
+        Rock, Paper, Scissors
+    </h2>
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        Choose your weapon and try to beat the computer!
+    </div>
+</div>
+
+<div class="game-card">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="row mb-4">
+                <div class="col-4">
+                    <div class="score-display">
+                        <h4><i class="fas fa-user"></i></h4>
+                        <h3 id="playerScore">{{ player_score }}</h3>
+                        <p class="mb-0">You</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="score-display">
+                        <h4><i class="fas fa-equals"></i></h4>
+                        <h3 id="ties">{{ ties }}</h3>
+                        <p class="mb-0">Ties</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="score-display">
+                        <h4><i class="fas fa-robot"></i></h4>
+                        <h3 id="computerScore">{{ computer_score }}</h3>
+                        <p class="mb-0">Computer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4">
+                <div class="row">
+                    {% for key, info in choices.items() %}
+                    <div class="col-md-4 mb-3">
+                        <button class="choice-btn w-100" data-choice="{{ key }}">
+                            <span class="emoji">{{ info.emoji }}</span><br>
+                            <span class="fw-bold">{{ key.title() }}</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="feedback" class="feedback text-center">
+                <div id="feedbackMessage"></div>
+                <button id="nextBtn" class="btn btn-game mt-3" style="display: none;">
+                    <i class="fas fa-arrow-right me-2"></i>
+                    Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('statistics') }}" class="btn btn-outline-info me-2">
+                <i class="fas fa-chart-bar me-2"></i>
+                Statistics
+            </a>
+            <a href="{{ url_for('history') }}" class="btn btn-outline-warning">
+                <i class="fas fa-history me-2"></i>
+                Game History
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    let waiting = false;
+    $('.choice-btn').click(function() {
+        if (waiting) return;
+        waiting = true;
+        $('.choice-btn').removeClass('selected');
+        $(this).addClass('selected');
+        const choice = $(this).data('choice');
+        $('#feedback').hide().removeClass('win lose tie');
+        $('#nextBtn').hide();
+        $.ajax({
+            url: '{{ url_for("make_move") }}',
+            method: 'POST',
+            data: { choice: choice },
+            success: function(response) {
+                // Capitalize choices for display
+                const playerChoiceLabel = response.player_choice.charAt(0).toUpperCase() + response.player_choice.slice(1);
+                const computerChoiceLabel = response.computer_choice.charAt(0).toUpperCase() + response.computer_choice.slice(1);
+                let msg = '';
+                if (response.result === 'tie') {
+                    msg = `<span class='emoji'>${response.player_emoji}</span> <strong>${playerChoiceLabel}</strong> vs <span class='emoji'>${response.computer_emoji}</span> <strong>${computerChoiceLabel}</strong><br>🤝 It's a tie!`;
+                    $('#feedback').addClass('tie');
+                } else if (response.result === 'player') {
+                    msg = `<span class='emoji'>${response.player_emoji}</span> <strong>${playerChoiceLabel}</strong> vs <span class='emoji'>${response.computer_emoji}</span> <strong>${computerChoiceLabel}</strong><br>🎉 You win! <br><small>${playerChoiceLabel} ${response.phrase}</small>`;
+                    $('#feedback').addClass('win');
+                } else {
+                    msg = `<span class='emoji'>${response.player_emoji}</span> <strong>${playerChoiceLabel}</strong> vs <span class='emoji'>${response.computer_emoji}</span> <strong>${computerChoiceLabel}</strong><br>😔 Computer wins! <br><small>${computerChoiceLabel} ${response.phrase}</small>`;
+                    $('#feedback').addClass('lose');
+                }
+                $('#feedbackMessage').html(msg);
+                $('#playerScore').text(response.player_score);
+                $('#computerScore').text(response.computer_score);
+                $('#ties').text(response.ties);
+                $('#feedback').fadeIn();
+                setTimeout(function() {
+                    $('#nextBtn').fadeIn();
+                }, 1200);
+                waiting = false;
+            },
+            error: function() {
+                alert('An error occurred. Please try again.');
+                waiting = false;
+            }
+        });
+    });
+    $('#nextBtn').click(function() {
+        $('#feedback').hide();
+        $('.choice-btn').removeClass('selected');
+        $('#nextBtn').hide();
+    });
+});
+</script>
+{% endblock %} 

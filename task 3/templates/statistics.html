@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics - Rock Paper Scissors{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="text-primary">
+        <i class="fas fa-chart-bar"></i>
+        Player Statistics
+    </h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-lg">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <h3 class="card-title">
+                        <i class="fas fa-user-circle text-primary"></i>
+                        {{ player_name }}
+                    </h3>
+                </div>
+                <div class="row text-center mb-4">
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-gamepad"></i></h4>
+                            <h3>{{ games_played }}</h3>
+                            <p class="mb-0">Games Played</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-trophy"></i></h4>
+                            <h3>{{ player_score }}</h3>
+                            <p class="mb-0">Wins</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-robot"></i></h4>
+                            <h3>{{ computer_score }}</h3>
+                            <p class="mb-0">Losses</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center mb-4">
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-equals"></i></h4>
+                            <h3>{{ ties }}</h3>
+                            <p class="mb-0">Ties</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-percentage"></i></h4>
+                            <h3>{{ '%.1f'|format(win_rate) }}%</h3>
+                            <p class="mb-0">Win Rate</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-percentage"></i></h4>
+                            <h3>{{ '%.1f'|format(loss_rate) }}%</h3>
+                            <p class="mb-0">Loss Rate</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center mb-4">
+                    <div class="col-md-4">
+                        <div class="score-display">
+                            <h4><i class="fas fa-percentage"></i></h4>
+                            <h3>{{ '%.1f'|format(tie_rate) }}%</h3>
+                            <p class="mb-0">Tie Rate</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <h5><i class="fas fa-chart-pie text-info"></i> Choice Analysis</h5>
+                    <div class="row">
+                        {% for key, info in choices.items() %}
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm mb-2">
+                                <div class="card-body text-center">
+                                    <span class="emoji">{{ info.emoji }}</span>
+                                    <h6 class="fw-bold mt-2 mb-1">{{ key.title() }}</h6>
+                                    <p class="mb-0">{{ choice_counts[key] }} times ({{ '%.1f'|format((choice_counts[key] / games_played * 100) if games_played > 0 else 0) }}%)</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('play') }}" class="btn btn-game btn-lg me-3">
+                        <i class="fas fa-play me-2"></i>
+                        Play Game
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-home me-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

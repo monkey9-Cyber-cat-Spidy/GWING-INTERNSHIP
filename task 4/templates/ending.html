@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}The Kingdom of Shadows - Epilogue{% endblock %}
+{% block content %}
+<h2>🌌 {{ epilogue.title }}</h2>
+<p style="white-space:pre-line;">{{ epilogue.text }}</p>
+<div class="stats">
+    <strong>{{ stats.name }}</strong><br>
+    ❤️ Health: {{ stats.health }}/100 &nbsp; 🌑 Shadow Mark: {{ stats.shadow_mark }}/100 &nbsp; ✨ Old Light: {{ stats.old_light }}/100 &nbsp; 🏆 Reputation: {{ stats.reputation }}/100<br>
+    <span>📦 Inventory: {{ stats.inventory|join(', ') }}</span>
+</div>
+<a href="{{ url_for('restart') }}"><button>Play Again</button></a>
+{% endblock %} 

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Interactive Quiz Game{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <div class="mb-4">
+        <span class="emoji">🎮</span>
+        <h1 class="display-4 fw-bold text-primary">Interactive Quiz Game</h1>
+        <span class="emoji">🎮</span>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-gamepad text-primary"></i>
+                        Welcome to the Ultimate Quiz Experience!
+                    </h2>
+                    
+                    <div class="row text-start mb-4">
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-question-circle text-info"></i> What's Included:</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple choice questions</li>
+                                <li><i class="fas fa-check text-success"></i> Number guessing challenges</li>
+                                <li><i class="fas fa-check text-success"></i> Real-time score tracking</li>
+                                <li><i class="fas fa-check text-success"></i> Detailed results & grading</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-star text-warning"></i> Features:</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-trophy text-warning"></i> Bonus points system</li>
+                                <li><i class="fas fa-lightbulb text-info"></i> Smart hints & tips</li>
+                                <li><i class="fas fa-chart-line text-success"></i> Performance analytics</li>
+                                <li><i class="fas fa-redo text-primary"></i> Play again anytime</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('start_game') }}" class="mt-4">
+                        <div class="mb-4">
+                            <label for="player_name" class="form-label fw-bold">
+                                <i class="fas fa-user text-primary"></i>
+                                Enter Your Name:
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="player_name" 
+                                   name="player_name" 
+                                   placeholder="Your name here..." 
+                                   required 
+                                   autocomplete="off">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-game btn-lg">
+                            <i class="fas fa-play me-2"></i>
+                            Start Game
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4 text-white">
+        <small>
+            <i class="fas fa-info-circle"></i>
+            Ready to test your knowledge? Let's begin the adventure!
+        </small>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Add some animation to the form
+    $('#player_name').focus(function() {
+        $(this).addClass('shadow-lg');
+    }).blur(function() {
+        $(this).removeClass('shadow-lg');
+    });
+    
+    // Form validation
+    $('form').submit(function(e) {
+        var name = $('#player_name').val().trim();
+        if (name.length === 0) {
+            e.preventDefault();
+            alert('Please enter your name to continue!');
+            $('#player_name').focus();
+        }
+    });
+});
+</script>
+{% endblock %} 

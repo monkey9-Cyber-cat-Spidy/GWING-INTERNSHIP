@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}The Kingdom of Shadows - Start{% endblock %}
+{% block content %}
+<h1>🏰 The Kingdom of Shadows</h1>
+<p>"In a land ruled by kings and undone by shadows, one man walks the edge of blade and myth."</p>
+<form method="post">
+    <label for="name">Enter your name (or leave blank for Kairo):</label><br>
+    <input type="text" id="name" name="name" maxlength="32" style="margin: 1em 0; padding: 0.5em; width: 60%; border-radius: 5px; border: 1px solid #444; background: #23232a; color: #fff;">
+    <br>
+    <button type="submit">Begin Your Journey</button>
+</form>
+{% endblock %} 

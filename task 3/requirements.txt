@@ -1,0 +1,12 @@
+# No external dependencies required
+# This game uses only built-in Python modules:
+# - random (for computer choice generation)
+# - time (for delays and timing)
+# - os (for screen clearing)
+# - json (for statistics persistence)
+# - datetime (for timestamping game records)
+
+# Python version requirement
+# Python >= 3.6 
+Flask==2.3.3
+Werkzeug==2.3.7 

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}High Scores - Number Guessing Game{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="text-primary">
+        <i class="fas fa-trophy"></i>
+        High Scores
+    </h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-lg">
+            <div class="card-body p-5">
+                {% if high_scores %}
+                <div class="text-center mb-4">
+                    <h3 class="card-title">
+                        <i class="fas fa-crown text-warning"></i>
+                        Top Players
+                    </h3>
+                </div>
+                
+                <div class="high-scores-list">
+                    {% for score_data in high_scores %}
+                    <div class="high-score-item">
+                        <div class="row align-items-center">
+                            <div class="col-md-1 text-center">
+                                <h4 class="mb-0">
+                                    {% if loop.index == 1 %}
+                                    <i class="fas fa-crown text-warning"></i>
+                                    {% elif loop.index == 2 %}
+                                    <i class="fas fa-medal text-secondary"></i>
+                                    {% elif loop.index == 3 %}
+                                    <i class="fas fa-medal text-warning"></i>
+                                    {% else %}
+                                    <span class="badge bg-primary">{{ loop.index }}</span>
+                                    {% endif %}
+                                </h4>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 class="mb-1">{{ score_data.name }}</h5>
+                                <small class="text-muted">{{ score_data.date }}</small>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <span class="difficulty-badge difficulty-{{ score_data.difficulty }}">
+                                    {{ score_data.difficulty.upper() }}
+                                </span>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <h4 class="mb-0 text-primary">{{ score_data.score }} points</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="text-center mt-4">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Keep playing to improve your score and climb the leaderboard!
+                    </div>
+                </div>
+                
+                {% else %}
+                <div class="text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-trophy text-muted" style="font-size: 4em;"></i>
+                    </div>
+                    <h4 class="text-muted">No High Scores Yet!</h4>
+                    <p class="text-muted">Be the first to set a high score by playing the game!</p>
+                </div>
+                {% endif %}
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('new_game') }}" class="btn btn-game btn-lg me-3">
+                        <i class="fas fa-play me-2"></i>
+                        Play Game
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-home me-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-center">
+            <a href="{{ url_for('statistics') }}" class="btn btn-outline-info me-3">
+                <i class="fas fa-chart-bar me-2"></i>
+                My Statistics
+            </a>
+            <a href="{{ url_for('difficulty') }}" class="btn btn-outline-primary">
+                <i class="fas fa-cog me-2"></i>
+                Change Difficulty
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Add animation to high score items
+    $('.high-score-item').each(function(index) {
+        $(this).hide().delay(index * 100).fadeIn(500);
+    });
+    
+    // Add special effects for top 3
+    $('.high-score-item').each(function(index) {
+        if (index < 3) {
+            $(this).addClass('shadow-lg');
+        }
+    });
+});
+</script>
+{% endblock %} 

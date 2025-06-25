@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Game History - Rock Paper Scissors{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="text-primary">
+        <i class="fas fa-history"></i>
+        Game History
+    </h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-lg">
+            <div class="card-body p-5">
+                {% if game_history %}
+                <div class="table-responsive">
+                    <table class="table table-bordered history-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Round</th>
+                                <th>Player</th>
+                                <th>Computer</th>
+                                <th>Result</th>
+                                <th>Score</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for game in game_history %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><span class="emoji">{{ choices[game.player_choice].emoji }}</span> {{ game.player_choice.title() }}</td>
+                                <td><span class="emoji">{{ choices[game.computer_choice].emoji }}</span> {{ game.computer_choice.title() }}</td>
+                                <td class="{% if game.result == 'player' %}win{% elif game.result == 'computer' %}lose{% else %}tie{% endif %}">
+                                    {% if game.result == 'player' %}👤 Win{% elif game.result == 'computer' %}🤖 Win{% else %}🤝 Tie{% endif %}
+                                </td>
+                                <td>{{ game.player_score }} - {{ game.computer_score }}</td>
+                                <td><small>{{ game.timestamp }}</small></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-history text-muted" style="font-size: 4em;"></i>
+                    </div>
+                    <h4 class="text-muted">No Games Played Yet!</h4>
+                    <p class="text-muted">Play a round to see your game history here.</p>
+                </div>
+                {% endif %}
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('play') }}" class="btn btn-game btn-lg me-3">
+                        <i class="fas fa-play me-2"></i>
+                        Play Game
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-home me-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

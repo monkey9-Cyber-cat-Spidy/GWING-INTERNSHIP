@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz - Interactive Quiz Game{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="text-primary">
+        <i class="fas fa-question-circle"></i>
+        Quiz Section
+    </h2>
+    <div class="progress mb-3" style="height: 10px;">
+        <div class="progress-bar" role="progressbar" 
+             style="width: {{ (question_num / total_questions) * 100 }}%"
+             aria-valuenow="{{ question_num }}" 
+             aria-valuemin="0" 
+             aria-valuemax="{{ total_questions }}">
+        </div>
+    </div>
+    <p class="text-muted">
+        Question {{ question_num }} of {{ total_questions }}
+    </p>
+</div>
+
+<div class="question-card">
+    <h3 class="mb-4">
+        <i class="fas fa-lightbulb text-warning"></i>
+        {{ question.question }}
+    </h3>
+    
+    <form id="quizForm">
+        <div class="row">
+            {% for option in question.options %}
+            <div class="col-md-6 mb-3">
+                <button type="button" 
+                        class="btn btn-option option-btn" 
+                        data-answer="{{ option[0] }}">
+                    <strong>{{ option[0] }}</strong> {{ option[3:] }}
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </form>
+    
+    <div id="feedback" class="feedback">
+        <div id="feedbackMessage"></div>
+        <div id="explanation" class="mt-2"></div>
+        <button id="nextBtn" class="btn btn-game mt-3" style="display: none;">
+            <i class="fas fa-arrow-right me-2"></i>
+            Next Question
+        </button>
+    </div>
+    
+    <div id="loading" class="loading text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-home me-2"></i>
+        Back to Home
+    </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    let answered = false;
+    
+    $('.option-btn').click(function() {
+        if (answered) return;
+        
+        answered = true;
+        const selectedAnswer = $(this).data('answer');
+        const selectedBtn = $(this);
+        
+        // Disable all buttons
+        $('.option-btn').prop('disabled', true);
+        
+        // Show loading
+        $('#loading').show();
+        
+        // Submit answer via AJAX
+        $.ajax({
+            url: '{{ url_for("submit_answer") }}',
+            method: 'POST',
+            data: {
+                answer: selectedAnswer
+            },
+            success: function(response) {
+                $('#loading').hide();
+                
+                // Mark correct/incorrect answers
+                $('.option-btn').each(function() {
+                    const btnAnswer = $(this).data('answer');
+                    if (btnAnswer === response.correct_answer) {
+                        $(this).addClass('correct');
+                    } else if (btnAnswer === selectedAnswer && !response.correct) {
+                        $(this).addClass('incorrect');
+                    }
+                });
+                
+                // Show feedback
+                const feedbackDiv = $('#feedback');
+                const feedbackMessage = $('#feedbackMessage');
+                const explanationDiv = $('#explanation');
+                
+                if (response.correct) {
+                    feedbackDiv.addClass('correct');
+                    feedbackMessage.html('<i class="fas fa-check-circle"></i> Correct! Well done!');
+                } else {
+                    feedbackDiv.addClass('incorrect');
+                    feedbackMessage.html('<i class="fas fa-times-circle"></i> Wrong! The correct answer was ' + response.correct_answer + '.');
+                }
+                
+                explanationDiv.html('<i class="fas fa-info-circle"></i> ' + response.explanation);
+                feedbackDiv.show();
+                
+                // Show next button after delay
+                setTimeout(function() {
+                    $('#nextBtn').show();
+                }, 2000);
+            },
+            error: function() {
+                $('#loading').hide();
+                alert('An error occurred. Please try again.');
+                answered = false;
+                $('.option-btn').prop('disabled', false);
+            }
+        });
+    });
+    
+    $('#nextBtn').click(function() {
+        window.location.href = '{{ url_for("quiz") }}';
+    });
+    
+    // Add hover effects
+    $('.option-btn').hover(
+        function() {
+            if (!answered) {
+                $(this).addClass('shadow');
+            }
+        },
+        function() {
+            $(this).removeClass('shadow');
+        }
+    );
+});
+</script>
+{% endblock %} 

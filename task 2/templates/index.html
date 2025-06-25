@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Number Guessing Game{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <div class="mb-4">
+        <span class="emoji">🎯</span>
+        <h1 class="display-4 fw-bold text-primary">Number Guessing Game</h1>
+        <span class="emoji">🎯</span>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <h2 class="card-title mb-4">
+                        <i class="fas fa-gamepad text-primary"></i>
+                        Welcome to the Ultimate Number Guessing Challenge!
+                    </h2>
+                    
+                    <div class="row text-start mb-4">
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-star text-warning"></i> Game Features:</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success"></i> Multiple difficulty levels</li>
+                                <li><i class="fas fa-check text-success"></i> Score tracking & high scores</li>
+                                <li><i class="fas fa-check text-success"></i> Smart hints system</li>
+                                <li><i class="fas fa-check text-success"></i> Statistics tracking</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-trophy text-warning"></i> Difficulty Levels:</h5>
+                            <ul class="list-unstyled">
+                                <li><span class="difficulty-badge difficulty-easy">Easy</span> 1-50, 10 attempts</li>
+                                <li><span class="difficulty-badge difficulty-medium">Medium</span> 1-100, 8 attempts</li>
+                                <li><span class="difficulty-badge difficulty-hard">Hard</span> 1-200, 6 attempts</li>
+                                <li><span class="difficulty-badge difficulty-expert">Expert</span> 1-500, 5 attempts</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('start_game') }}" class="mt-4">
+                        <div class="mb-4">
+                            <label for="player_name" class="form-label fw-bold">
+                                <i class="fas fa-user text-primary"></i>
+                                Enter Your Name:
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   id="player_name" 
+                                   name="player_name" 
+                                   placeholder="Your name here..." 
+                                   required 
+                                   autocomplete="off">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-cog text-primary"></i>
+                                Select Difficulty:
+                            </label>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <input type="radio" class="btn-check" name="difficulty" id="easy" value="easy" checked>
+                                    <label class="btn btn-difficulty" for="easy">
+                                        <i class="fas fa-seedling"></i><br>
+                                        <strong>Easy</strong><br>
+                                        <small>1-50, 10 attempts</small>
+                                    </label>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <input type="radio" class="btn-check" name="difficulty" id="medium" value="medium">
+                                    <label class="btn btn-difficulty" for="medium">
+                                        <i class="fas fa-balance-scale"></i><br>
+                                        <strong>Medium</strong><br>
+                                        <small>1-100, 8 attempts</small>
+                                    </label>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <input type="radio" class="btn-check" name="difficulty" id="hard" value="hard">
+                                    <label class="btn btn-difficulty" for="hard">
+                                        <i class="fas fa-fire"></i><br>
+                                        <strong>Hard</strong><br>
+                                        <small>1-200, 6 attempts</small>
+                                    </label>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <input type="radio" class="btn-check" name="difficulty" id="expert" value="expert">
+                                    <label class="btn btn-difficulty" for="expert">
+                                        <i class="fas fa-crown"></i><br>
+                                        <strong>Expert</strong><br>
+                                        <small>1-500, 5 attempts</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-game btn-lg">
+                            <i class="fas fa-play me-2"></i>
+                            Start Game
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4 text-white">
+        <small>
+            <i class="fas fa-info-circle"></i>
+            Ready to test your guessing skills? Choose your difficulty and start playing!
+        </small>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Add some animation to the form
+    $('#player_name').focus(function() {
+        $(this).addClass('shadow-lg');
+    }).blur(function() {
+        $(this).removeClass('shadow-lg');
+    });
+    
+    // Form validation
+    $('form').submit(function(e) {
+        var name = $('#player_name').val().trim();
+        if (name.length === 0) {
+            e.preventDefault();
+            alert('Please enter your name to continue!');
+            $('#player_name').focus();
+        }
+    });
+    
+    // Difficulty selection animation
+    $('.btn-difficulty').click(function() {
+        $('.btn-difficulty').removeClass('active');
+        $(this).addClass('active');
+    });
+});
+</script>
+{% endblock %} 

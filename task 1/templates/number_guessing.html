@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Number Guessing - Interactive Quiz Game{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2 class="text-primary">
+        <i class="fas fa-bullseye"></i>
+        Number Guessing Challenge
+    </h2>
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        I'm thinking of a number between 1 and 100. You have 10 attempts to guess it!
+    </div>
+</div>
+
+<div class="question-card">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="text-center mb-4">
+                <h4>
+                    <i class="fas fa-clock text-warning"></i>
+                    Attempts: <span id="attempts">{{ attempts }}</span> / {{ max_attempts }}
+                </h4>
+                <div class="progress mb-3" style="height: 10px;">
+                    <div class="progress-bar bg-warning" role="progressbar" 
+                         style="width: {{ (attempts / max_attempts) * 100 }}%;"
+                         aria-valuenow="{{ attempts }}" 
+                         aria-valuemin="0" 
+                         aria-valuemax="{{ max_attempts }}">
+                    </div>
+                </div>
+            </div>
+            
+            <form id="guessForm">
+                <div class="mb-4">
+                    <label for="guess" class="form-label fw-bold">
+                        <i class="fas fa-dice text-primary"></i>
+                        Enter your guess:
+                    </label>
+                    <div class="input-group input-group-lg">
+                        <input type="number" 
+                               class="form-control" 
+                               id="guess" 
+                               name="guess" 
+                               min="1" 
+                               max="100" 
+                               placeholder="1-100"
+                               required>
+                        <button type="submit" class="btn btn-game">
+                            <i class="fas fa-paper-plane"></i>
+                            Guess
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            <div id="feedback" class="feedback">
+                <div id="feedbackMessage"></div>
+                <div id="hint" class="mt-2"></div>
+                <button id="nextBtn" class="btn btn-game mt-3" style="display: none;">
+                    <i class="fas fa-trophy me-2"></i>
+                    View Results
+                </button>
+            </div>
+            
+            <div id="loading" class="loading text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-home me-2"></i>
+        Back to Home
+    </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Template variables
+var currentAttempts = {{ attempts }};
+var maxAttempts = {{ max_attempts }};
+
+$(document).ready(function() {
+    let gameOver = false;
+    
+    $('#guessForm').submit(function(e) {
+        e.preventDefault();
+        
+        if (gameOver) return;
+        
+        const guess = $('#guess').val();
+        
+        if (!guess || guess < 1 || guess > 100) {
+            alert('Please enter a valid number between 1 and 100!');
+            return;
+        }
+        
+        // Disable form
+        $('#guess').prop('disabled', true);
+        $('button[type="submit"]').prop('disabled', true);
+        
+        // Show loading
+        $('#loading').show();
+        
+        // Submit guess via AJAX
+        $.ajax({
+            url: '{{ url_for("submit_guess") }}',
+            method: 'POST',
+            data: {
+                guess: guess
+            },
+            success: function(response) {
+                $('#loading').hide();
+                
+                // Update attempts
+                if (response.attempts) {
+                    currentAttempts = response.attempts;
+                    $('#attempts').text(currentAttempts);
+                } else {
+                    currentAttempts += 1;
+                    $('#attempts').text(currentAttempts);
+                }
+                
+                // Show feedback
+                const feedbackDiv = $('#feedback');
+                const feedbackMessage = $('#feedbackMessage');
+                const hintDiv = $('#hint');
+                
+                if (response.correct) {
+                    feedbackDiv.addClass('correct');
+                    feedbackMessage.html('<i class="fas fa-trophy"></i> ' + response.message);
+                    if (response.bonus_points) {
+                        feedbackMessage.append('<br><strong>Bonus points earned: ' + response.bonus_points + '</strong>');
+                    }
+                    gameOver = true;
+                } else {
+                    feedbackDiv.addClass('incorrect');
+                    feedbackMessage.html('<i class="fas fa-info-circle"></i> ' + response.message);
+                    
+                    if (response.hint) {
+                        hintDiv.html('<i class="fas fa-lightbulb text-warning"></i> ' + response.hint);
+                    }
+                }
+                
+                feedbackDiv.show();
+                
+                // Check if game over
+                if (response.next_url) {
+                    setTimeout(function() {
+                        $('#nextBtn').show();
+                    }, 2000);
+                    gameOver = true;
+                } else {
+                    // Re-enable form for next guess
+                    $('#guess').prop('disabled', false).val('').focus();
+                    $('button[type="submit"]').prop('disabled', false);
+                }
+            },
+            error: function(xhr) {
+                $('#loading').hide();
+                const response = xhr.responseJSON;
+                if (response && response.error) {
+                    alert(response.error);
+                } else {
+                    alert('An error occurred. Please try again.');
+                }
+                $('#guess').prop('disabled', false);
+                $('button[type="submit"]').prop('disabled', false);
+            }
+        });
+    });
+    
+    $('#nextBtn').click(function() {
+        window.location.href = '{{ url_for("results") }}';
+    });
+    
+    // Focus on input when page loads
+    $('#guess').focus();
+    
+    // Add some animation
+    $('#guess').on('input', function() {
+        const value = $(this).val();
+        if (value >= 1 && value <= 100) {
+            $(this).addClass('border-success');
+        } else {
+            $(this).removeClass('border-success');
+        }
+    });
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}The Kingdom of Shadows{% endblock %}</title>
+    <style>
+        body {
+            background: #18181b;
+            color: #f3f3f7;
+            font-family: 'Merriweather', serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #23232a;
+            border-radius: 12px;
+            box-shadow: 0 4px 32px #000a;
+            padding: 2.5em 2em 2em 2em;
+        }
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+        .choices button {
+            background: #3b3b4f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.8em 1.5em;
+            margin: 0.5em 0;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .choices button:hover {
+            background: #5a4e7c;
+        }
+        .stats {
+            background: #22222a;
+            border-radius: 8px;
+            padding: 1em;
+            margin-bottom: 1.5em;
+            font-size: 1em;
+        }
+        .footer {
+            text-align: center;
+            color: #aaa;
+            margin-top: 2em;
+            font-size: 0.95em;
+        }
+        a, a:visited {
+            color: #b8a1ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <div class="footer">
+        &copy; Monkey Productions™ | The Kingdom of Shadows
+    </div>
+</body>
+</html> 
