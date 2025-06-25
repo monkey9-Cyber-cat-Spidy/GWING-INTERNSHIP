@@ -1,4 +1,4 @@
-# 🎮 Python Game Collection: Internship Projects
+# 🎮 Python Game Collection: Internship Projects in GWING software technologies
 
 Welcome to the **Python Game Collection**! This repository contains four unique Python-based game projects, each with both console and web interfaces (where available). Explore quizzes, number guessing, classic games, and interactive storytelling—all in one place.
 
