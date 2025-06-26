@@ -43,7 +43,7 @@ A Python-based interactive Rock, Paper, Scissors game where players compete agai
 
 1. **Navigate to the task 3 folder**:
    ```bash
-   cd "task 3"
+   cd "task3"
    ```
 
 2. **Run the game**:
@@ -136,7 +136,7 @@ A Python-based interactive Rock, Paper, Scissors game where players compete agai
 ## 📝 File Structure
 
 ```
-task 3/
+task3/
 ├── rock_paper_scissors.py    # Main game file
 ├── README.md                 # This documentation
 ├── test_game.py              # Test file (optional)
