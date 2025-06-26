@@ -41,7 +41,7 @@ A Python-based interactive quiz game with both console and web interfaces. Test 
 ### Console Version
 1. **Navigate to the task 1 folder**:
    ```bash
-   cd "task 1"
+   cd "task1"
    ```
 
 2. **Run the console game**:
@@ -57,7 +57,7 @@ A Python-based interactive quiz game with both console and web interfaces. Test 
 ### Web Version
 1. **Navigate to the task 1 folder**:
    ```bash
-   cd "task 1"
+   cd "task1"
    ```
 
 2. **Install dependencies**:
@@ -106,7 +106,7 @@ A Python-based interactive quiz game with both console and web interfaces. Test 
 ## 📝 File Structure
 
 ```
-task 1/
+task1/
 ├── quiz_game.py             # Console version of the game
 ├── app.py                   # Flask web application
 ├── templates/               # HTML templates for web interface
