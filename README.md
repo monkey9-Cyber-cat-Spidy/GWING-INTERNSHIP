@@ -19,7 +19,7 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
 
 ## 📦 Project Details
 
-### 1. [Interactive Quiz Game](./task%201/)
+### 1. [Interactive Quiz Game](./task1/)
 - **Quiz Section:** Multiple-choice questions, explanations, progress tracking
 - **Number Guessing:** Smart hints, bonus points, attempt tracking
 - **Scoring:** Points, bonus, grading, detailed results
@@ -29,7 +29,7 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
   - Web: `cd "task1" && python app.py` or `run_web.bat`
   - Preview: [http://localhost:5000](http://localhost:5000)
 
-### 2. [Number Guessing Game](./task%202/)
+### 2. [Number Guessing Game](./task2/)
 - **Difficulty Levels:** Easy, Medium, Hard, Expert
 - **Hints:** Even/odd, range, strategic guidance
 - **Scoring:** Dynamic, efficiency-based, high scores
@@ -39,7 +39,7 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
   - Web: `cd "task2" && python app.py` or `run_web.bat`
   - Preview: [http://localhost:5000](http://localhost:5000)
 
-### 3. [Rock, Paper, Scissors](./task%203/)
+### 3. [Rock, Paper, Scissors](./task3/)
 - **Classic Gameplay:** Rock, paper, scissors with computer opponent
 - **Statistics:** Win rate, choice analysis, session stats
 - **Game History:** Round-by-round tracking, recent games
@@ -49,7 +49,7 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
   - Web: `cd "task3" && python app.py`
   - Preview: [http://localhost:5000](http://localhost:5000)
 
-### 4. [Kingdom of Shadows](./task%204/)
+### 4. [Kingdom of Shadows](./task4/)
 - **Story Game:** Dark fantasy, branching narrative, character stats
 - **Choices:** Multiple endings, relationship system, inventory
 - **Progression:** Health, shadow mark, old light, reputation
@@ -63,7 +63,7 @@ Welcome to the **Python Game Collection**! This repository contains four unique 
 ## 🚀 Quick Start
 
 1. **Clone the repository**
-2. **Navigate to a project folder** (e.g., `cd "task 1"`)
+2. **Navigate to a project folder** (e.g., `cd "task1"`)
 3. **Install dependencies** (if needed):
    ```bash
    pip install -r requirements.txt
