@@ -44,7 +44,7 @@ A Python-based interactive number guessing game with multiple difficulty levels,
 
 1. **Navigate to the task 2 folder**:
    ```bash
-   cd "task 2"
+   cd "task2"
    ```
 
 2. **Run the game**:
@@ -157,7 +157,7 @@ self.difficulty_levels = {
 ## 📝 File Structure
 
 ```
-task 2/
+task2/
 ├── number_guessing_game.py    # Main game file
 ├── README.md                  # This documentation
 ├── high_scores.json          # High scores data (created automatically)
