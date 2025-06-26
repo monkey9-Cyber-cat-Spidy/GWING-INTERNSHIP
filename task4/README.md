@@ -38,7 +38,7 @@ A Python-based "Choose Your Own Adventure" game where players navigate through a
 
 1. **Navigate to the task 4 folder**:
    ```bash
-   cd "task 4"
+   cd "task4"
    ```
 
 2. **Run the game**:
@@ -122,7 +122,7 @@ A legacy is built not by power—but by sacrifice. The game examines what we're 
 ## 📝 **File Structure**
 
 ```
-task 4/
+task4/
 ├── kingdom_of_shadows.py    # Main game file
 ├── README.md                # This documentation
 ├── test_game.py             # Test file (optional)
